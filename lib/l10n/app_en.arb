@@ -1,0 +1,409 @@
+{
+  "@@locale": "en",
+  "appName": "Anything Notification",
+  "navUpcoming": "Upcoming",
+  "navHistory": "History",
+  "navSettings": "Settings",
+  "upcomingTitle": "Today, {date}",
+  "@upcomingTitle": {
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "EEE d MMM",
+        "isCustomDateFormat": "true"
+      }
+    }
+  },
+  "newReminder": "New reminder",
+  "upcomingEmptyTitle": "Nothing coming up",
+  "upcomingEmptyBody": "Tap New reminder to add your first one.",
+  "sectionOverdue": "Overdue",
+  "sectionToday": "Today",
+  "sectionTomorrow": "Tomorrow",
+  "sectionThisWeek": "This week",
+  "sectionLater": "Later",
+  "sectionPaused": "Paused",
+  "markDone": "Mark done",
+  "reminderDeleted": "Reminder deleted",
+  "undo": "Undo",
+  "whenToday": "Today, {time}",
+  "@whenToday": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "whenTomorrow": "Tomorrow, {time}",
+  "@whenTomorrow": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "whenOnDate": "{date}, {time}",
+  "@whenOnDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "reminderSubtitle": "{when} · {repeat}",
+  "@reminderSubtitle": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      },
+      "repeat": {
+        "type": "String"
+      }
+    }
+  },
+  "snoozedUntil": "Snoozed until {time}",
+  "@snoozedUntil": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "editorNewTitle": "New reminder",
+  "editorEditTitle": "Edit reminder",
+  "editorTitleHint": "What should I remind you about?",
+  "editorNoteHint": "Add a note (optional)",
+  "editorWhen": "When",
+  "editorRepeat": "Repeat",
+  "editorSave": "Save",
+  "editorActive": "Active",
+  "editorActiveSubtitle": "Paused reminders stay saved but won't notify you",
+  "editorDelete": "Delete reminder",
+  "editorDeleteConfirmTitle": "Delete this reminder?",
+  "editorDeleteConfirmBody": "You can undo this right after.",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "editorTitleRequired": "Give your reminder a title",
+  "editorStartInPast": "Pick a time in the future",
+  "editorInvalidRepeat": "This repeat isn't valid",
+  "editorNext": "Next: {when}",
+  "@editorNext": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "editorNextThen": "Next: {first}, then {second}",
+  "@editorNextThen": {
+    "placeholders": {
+      "first": {
+        "type": "String"
+      },
+      "second": {
+        "type": "String"
+      }
+    }
+  },
+  "editorNoUpcoming": "No upcoming occurrences",
+  "repeatNone": "Doesn't repeat",
+  "repeatEveryDay": "Every day",
+  "repeatEveryWeek": "Every week",
+  "repeatEveryMonth": "Every month",
+  "repeatEveryYear": "Every year",
+  "repeatCustom": "Custom…",
+  "repeatSheetTitle": "Repeat",
+  "repeatEveryMinutes": "{count, plural, =1{Every minute} other{Every {count} minutes}}",
+  "@repeatEveryMinutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "repeatEveryHours": "{count, plural, =1{Every hour} other{Every {count} hours}}",
+  "@repeatEveryHours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "repeatEveryDays": "{count, plural, =1{Every day} other{Every {count} days}}",
+  "@repeatEveryDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "repeatEveryWeeks": "{count, plural, =1{Every week} other{Every {count} weeks}}",
+  "@repeatEveryWeeks": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "repeatEveryMonths": "{count, plural, =1{Every month} other{Every {count} months}}",
+  "@repeatEveryMonths": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "repeatEveryYears": "{count, plural, =1{Every year} other{Every {count} years}}",
+  "@repeatEveryYears": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "repeatOnDays": "{summary} on {days}",
+  "@repeatOnDays": {
+    "placeholders": {
+      "summary": {
+        "type": "String"
+      },
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "repeatOnLastDay": "{summary} on the last day",
+  "@repeatOnLastDay": {
+    "placeholders": {
+      "summary": {
+        "type": "String"
+      }
+    }
+  },
+  "repeatUntil": "{summary}, until {date}",
+  "@repeatUntil": {
+    "placeholders": {
+      "summary": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "repeatTimes": "{summary}, {count, plural, =1{once} other{{count} times}}",
+  "@repeatTimes": {
+    "placeholders": {
+      "summary": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "customRepeatTitle": "Custom repeat",
+  "customEvery": "Every",
+  "customUnitMinutes": "{count, plural, =1{minute} other{minutes}}",
+  "@customUnitMinutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "customUnitHours": "{count, plural, =1{hour} other{hours}}",
+  "@customUnitHours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "customUnitDays": "{count, plural, =1{day} other{days}}",
+  "@customUnitDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "customUnitWeeks": "{count, plural, =1{week} other{weeks}}",
+  "@customUnitWeeks": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "customUnitMonths": "{count, plural, =1{month} other{months}}",
+  "@customUnitMonths": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "customUnitYears": "{count, plural, =1{year} other{years}}",
+  "@customUnitYears": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "customOnDays": "On",
+  "customMonthOnDay": "On day {day}",
+  "@customMonthOnDay": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "customMonthOnLastDay": "On the last day",
+  "customEnds": "Ends",
+  "customEndsNever": "Never",
+  "customEndsOnDate": "On date",
+  "customEndsAfter": "After",
+  "customEndsAfterSuffix": "times",
+  "customMinimumMinutes": "Minimum is 15 minutes",
+  "customDone": "Done",
+  "permNotificationsOffTitle": "Notifications are off",
+  "permNotificationsOffBody": "Turn them on so your reminders can reach you.",
+  "permTurnOn": "Turn on",
+  "permExactTitle": "Reminders may arrive a few minutes late",
+  "permExactBody": "Allow exact alarms so they arrive right on time.",
+  "permAllow": "Allow",
+  "exactDialogTitle": "Allow exact alarms?",
+  "exactDialogBody": "Without this, Android may delay reminders by several minutes. You can change it any time in system settings.",
+  "notNow": "Not now",
+  "historyTitle": "History",
+  "historyEmptyTitle": "No history yet",
+  "historyEmptyBody": "Reminders you complete, snooze or miss will appear here.",
+  "settingsTitle": "Settings",
+  "settingsAppearance": "Appearance",
+  "themeSystem": "System",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "dynamicColorTitle": "Dynamic color",
+  "dynamicColorSubtitle": "Match colors to your wallpaper (Android 12+)",
+  "categoriesTitle": "Categories",
+  "categoriesNew": "New category",
+  "categoriesEmptyTitle": "No categories yet",
+  "categoriesEmptyBody": "Categories group your reminders, like Work or Health.",
+  "categoryNewTitle": "New category",
+  "categoryEditTitle": "Edit category",
+  "categoryNameHint": "Category name",
+  "categoryNameRequired": "Give your category a name",
+  "categoryColorLabel": "Color",
+  "categoryIconLabel": "Icon",
+  "categoryDelete": "Delete category",
+  "categoryDeleteTitle": "Delete \"{name}\"?",
+  "@categoryDeleteTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryDeleteBody": "Reminders in this category will have no category. Your history keeps its name.",
+  "editorCategory": "Category",
+  "categoryNone": "None",
+  "categoryNewChip": "New",
+  "filterAll": "All",
+  "upcomingFilteredEmptyTitle": "Nothing in {category}",
+  "@upcomingFilteredEmptyTitle": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "upcomingFilteredEmptyBody": "Pick another category or add a reminder.",
+  "historyThisWeek": "{count, plural, =0{Nothing done in the last 7 days} =1{1 done in the last 7 days} other{{count} done in the last 7 days}}",
+  "@historyThisWeek": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "outcomeDone": "Done",
+  "outcomeSnoozed": "Snoozed",
+  "outcomeMissed": "Missed",
+  "historyEntrySubtitle": "{outcome} · due {time}",
+  "@historyEntrySubtitle": {
+    "placeholders": {
+      "outcome": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "historyYesterday": "Yesterday",
+  "historyClear": "Clear history",
+  "historyClearTitle": "Clear all history?",
+  "historyClearBody": "This removes the record of done, snoozed and missed reminders. Your reminders are not affected.",
+  "historyCleared": "History cleared",
+  "historyFilteredEmpty": "Nothing matches these filters",
+  "settingsReminders": "Reminders",
+  "settingsSnooze": "Snooze for",
+  "settingsSnoozeValue": "{minutes, plural, =1{1 minute} other{{minutes} minutes}}",
+  "@settingsSnoozeValue": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsCategoriesTile": "Categories",
+  "settingsCategoriesSubtitle": "Colors and icons for your reminders",
+  "settingsHistory": "History",
+  "settingsKeepHistory": "Keep history for",
+  "settingsReliability": "Reliability",
+  "reliabilityIntro": "Check that reminders can reach you.",
+  "reliabilityNotifications": "Notifications",
+  "reliabilityExact": "Exact alarms",
+  "statusOn": "On",
+  "statusOff": "Off",
+  "statusAllowed": "Allowed",
+  "statusNotAllowed": "Not allowed",
+  "reliabilityFix": "Fix",
+  "reliabilityTest": "Send test notification",
+  "reliabilityTestSubtitle": "Arrives in about 10 seconds. Lock your phone to check it still comes through.",
+  "reliabilityTestSent": "Sent. It should appear in about 10 seconds.",
+  "reliabilityGuideTitle": "Reminder didn't show up?",
+  "reliabilityGuideBattery": "Some phones (Xiaomi, Oppo, Samsung and others) stop apps in the background to save battery. Set Anything Notification to \"Unrestricted\" or \"Don't optimize\".",
+  "reliabilityGuideForceStop": "Force-stopping the app cancels its reminders until you open it again.",
+  "reliabilityGuideFocus": "Do Not Disturb or a Focus mode can silence notifications.",
+  "reliabilityGuideChecks": "Make sure Notifications and Exact alarms above are on.",
+  "reliabilityOpenBattery": "Open battery settings",
+  "settingsRetentionForever": "Forever",
+  "settingsRetentionYear": "1 year",
+  "settingsRetentionDays": "{days} days",
+  "@settingsRetentionDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsDefaultTime": "Default reminder time",
+  "settingsDefaultTimeSubtitle": "Used when you give a day but no time",
+  "quickAddHint": "Try \"Pay rent every 1st at 9am\"",
+  "quickAddMore": "More options",
+  "quickAddAdd": "Add",
+  "quickAddPickTime": "Pick a time",
+  "quickAddNoCategory": "No category",
+  "quickAddTitleNeeded": "Add what to remind you about",
+  "quickAddExamplesLabel": "Try typing",
+  "quickAddExample1": "Drink water every 2 hours",
+  "quickAddExample2": "Pay rent every 1st at 9am",
+  "quickAddExample3": "Call mom tomorrow at 6pm"
+}

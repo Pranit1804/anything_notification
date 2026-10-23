@@ -1,5 +1,5 @@
 name: anything_notification
-description: "A new Flutter project."
+description: "A app lets you create your reminder into notifications."
 publish_to: 'none'
 version: 0.1.0+1
 
@@ -7,13 +7,39 @@ environment:
   sdk: ^3.12.0
 
 dependencies:
+  # Stay on 1.x: 2.x moved to the separate material_ui package, whose
+  # ColorScheme type does not match package:flutter/material.dart.
+  dynamic_color: ^1.9.0
+  equatable: ^3.0.0
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  flutter_bloc: ^9.1.1
+  go_router: ^18.1.1
+  intl: ^0.20.2
+  shared_preferences: ^2.5.6
+  drift: ^2.35.2
+  drift_flutter: ^0.3.1
+  flutter_local_notifications: ^22.3.2
+  timezone: ^0.11.2
+  flutter_timezone: ^5.1.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  mocktail: ^1.0.5
+  drift_dev: ^2.35.1
+  build_runner: ^2.15.1
+  sqlite3: ^3.5.2
 
 flutter:
   uses-material-design: true
+  generate: true
+
+  fonts:
+    # Bundled (OFL, see assets/fonts/OFL.txt) so the app never needs INTERNET.
+    - family: PlusJakartaSans
+      fonts:
+        - asset: assets/fonts/PlusJakartaSans-Variable.ttf
