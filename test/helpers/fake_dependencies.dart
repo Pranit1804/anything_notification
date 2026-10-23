@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:anything_notification/app/app_dependencies.dart';
+import 'package:anything_notification/core/notifications/alarm_payload.dart';
 import 'package:anything_notification/core/db/app_database.dart';
 import 'package:anything_notification/core/notifications/alarm_scheduler.dart';
 import 'package:anything_notification/core/notifications/notification_permissions.dart';
@@ -34,10 +37,13 @@ class FakePermissions implements NotificationPermissions {
   FakePermissions({
     this.notificationsEnabled = true,
     this.exactAlarmsAllowed = true,
+    this.fullScreenIntentAllowed = true,
   });
 
   bool notificationsEnabled;
   bool exactAlarmsAllowed;
+  bool fullScreenIntentAllowed;
+  var fullScreenRequests = 0;
   var notificationRequests = 0;
   var exactAlarmRequests = 0;
   var settingsOpened = 0;
@@ -46,6 +52,7 @@ class FakePermissions implements NotificationPermissions {
   Future<PermissionSnapshot> status() async => PermissionSnapshot(
     notificationsEnabled: notificationsEnabled,
     exactAlarmsAllowed: exactAlarmsAllowed,
+    fullScreenIntentAllowed: fullScreenIntentAllowed,
   );
 
   @override
@@ -59,6 +66,9 @@ class FakePermissions implements NotificationPermissions {
 
   @override
   Future<void> openNotificationSettings() async => settingsOpened++;
+
+  @override
+  Future<void> requestFullScreenIntent() async => fullScreenRequests++;
 }
 
 class FakeTestNotifications implements TestNotificationSender {
@@ -71,6 +81,13 @@ class FakeTestNotifications implements TestNotificationSender {
 
 class FakeSystemSettings implements SystemSettings {
   var batterySettingsOpened = 0;
+  var alarmsFinished = 0;
+
+  @override
+  Future<bool> canUseFullScreenIntent() async => true;
+
+  @override
+  Future<void> finishAlarm() async => alarmsFinished++;
 
   @override
   Future<void> openBatterySettings() async => batterySettingsOpened++;
@@ -84,6 +101,7 @@ class TestEnvironment {
     required this.permissions,
     required this.testNotifications,
     required this.systemSettings,
+    required this.notificationTaps,
   });
 
   final AppDatabase database;
@@ -92,6 +110,9 @@ class TestEnvironment {
   final FakePermissions permissions;
   final FakeTestNotifications testNotifications;
   final FakeSystemSettings systemSettings;
+
+  /// Push a payload to act as if a notification was tapped in the running app.
+  final StreamController<AlarmPayload> notificationTaps;
 
   ReminderRepository get repository => dependencies.reminderRepository;
   CategoryRepository get categories => dependencies.categoryRepository;
@@ -121,6 +142,7 @@ class TestEnvironment {
     final fakePermissions = permissions ?? FakePermissions();
     final testNotifications = FakeTestNotifications();
     final systemSettings = FakeSystemSettings();
+    final taps = StreamController<AlarmPayload>.broadcast();
 
     return TestEnvironment._(
       database: database,
@@ -128,6 +150,7 @@ class TestEnvironment {
       permissions: fakePermissions,
       testNotifications: testNotifications,
       systemSettings: systemSettings,
+      notificationTaps: taps,
       dependencies: AppDependencies(
         settingsRepository: settings,
         reminderRepository: repository,
@@ -146,9 +169,13 @@ class TestEnvironment {
         testNotifications: testNotifications,
         systemSettings: systemSettings,
         clock: clock,
+        openReminderRequests: taps.stream,
       ),
     );
   }
 
-  Future<void> dispose() => database.close();
+  Future<void> dispose() async {
+    await notificationTaps.close();
+    await database.close();
+  }
 }

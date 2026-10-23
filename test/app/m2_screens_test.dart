@@ -400,7 +400,7 @@ void main() {
       await _openSettings(tester);
 
       expect(find.text('On'), findsOneWidget);
-      expect(find.text('Allowed'), findsOneWidget);
+      expect(find.text('Allowed'), findsNWidgets(2)); // exact + full-screen
       expect(find.text('Fix'), findsNothing);
     });
 

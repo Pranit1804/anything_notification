@@ -282,6 +282,13 @@ class _ReliabilitySection extends StatelessWidget {
               notOkLabel: l10n.statusNotAllowed,
               onFix: permissions.requestExactAlarms,
             ),
+            _StatusTile(
+              title: l10n.reliabilityFullScreen,
+              ok: snapshot?.fullScreenIntentAllowed,
+              okLabel: l10n.statusAllowed,
+              notOkLabel: l10n.statusNotAllowed,
+              onFix: permissions.requestFullScreenIntent,
+            ),
             ListTile(
               contentPadding: const EdgeInsets.symmetric(horizontal: 24),
               leading: const Icon(Icons.notifications_active_outlined),
@@ -309,6 +316,7 @@ class _ReliabilitySection extends StatelessWidget {
                 _GuideLine(l10n.reliabilityGuideBattery),
                 _GuideLine(l10n.reliabilityGuideForceStop),
                 _GuideLine(l10n.reliabilityGuideFocus),
+                _GuideLine(l10n.reliabilityGuideSticky),
                 _GuideLine(l10n.reliabilityGuideChecks),
                 Align(
                   alignment: Alignment.centerLeft,

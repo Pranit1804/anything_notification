@@ -405,5 +405,33 @@
   "quickAddExamplesLabel": "Try typing",
   "quickAddExample1": "Drink water every 2 hours",
   "quickAddExample2": "Pay rent every 1st at 9am",
-  "quickAddExample3": "Call mom tomorrow at 6pm"
+  "quickAddExample3": "Call mom tomorrow at 6pm",
+  "editorDelivery": "How it notifies you",
+  "deliveryStandard": "Standard",
+  "deliverySticky": "Sticky",
+  "deliveryAlarm": "Alarm",
+  "deliveryStandardHint": "A normal notification you can swipe away.",
+  "deliveryStickyHint": "Stays in your notifications until you mark it done or snooze it.",
+  "deliveryAlarmHint": "Wakes the screen and rings until you respond.",
+  "deliveryAlarmWarningTitle": "Full-screen alarms need permission",
+  "deliveryAlarmWarningBody": "Without it the alarm still rings, but shows as a normal notification instead of taking over the screen.",
+  "reliabilityFullScreen": "Full-screen alerts",
+  "reliabilityGuideSticky": "On Android 14 and newer you can still swipe a sticky notification away. It then stays in Overdue until you handle it.",
+  "alarmDone": "Done",
+  "alarmSnooze": "Snooze {minutes} min",
+  "alarmDue": "Due {time}",
+  "@alarmSnooze": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "@alarmDue": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  }
 }

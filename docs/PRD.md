@@ -254,7 +254,7 @@ lib/
 | M1 | Core reminders **+ scheduling spike** | DB schema, `RecurrenceEngine` + tests, scheduler + `reconcile()`, create/edit/list, one-time and recurring, permissions flow, Done/Snooze actions, boot + timezone handling. **Gate:** reliable delivery under Doze and reboot on a Pixel and one aggressive OEM |
 | M2 | Categories, Overdue, History, Settings | Reliability panel, test-notification button, 90-day retention. **Status: built.** Deferred on purpose: the "default reminder time" setting (nothing uses it until quick-add, M3) and the "Full-screen alerts" row of the Reliability panel (until the permission exists, M4). Added: a snooze-length setting, history retention choices (30 / 90 / 365 days / forever), and Missed entries filed under when the next occurrence fired |
 | M3 | Quick-add | Parser passes the Appendix A table; preview chips; fallbacks. **Status: built.** Adds the default-reminder-time setting. Known limits: English only; a bare "at 5" (no am/pm or colon) is not read as a time; "in N months/years" and end conditions ("until", "N times") are not parsed, only set in the editor |
-| M4 | Sticky + Alarm-style | Alarm channel, full-screen Alarm screen, permission fallbacks |
+| M4 | Sticky + Alarm-style | Alarm channel, full-screen Alarm screen, permission fallbacks. **Status: built and verified on an emulator, including a PIN-locked phone.** The "over the lock screen" flags are applied at runtime only when the keyguard is locked, and cleared (returning to the lock screen) when the alarm is handled. Sticky can be swiped away on Android 14+, documented in the Reliability guide |
 | M5 | Home-screen widget (P1) | Upcoming list, quick-add deep link, live updates |
 | M6 | Polish and Play release | Icons, splash, a11y pass, R8 release test, Play declarations, privacy policy, closed test |
 
@@ -270,6 +270,8 @@ lib/
 | Android 14+ lets users swipe away ongoing notifications | "Sticky" is not absolute | Document it; keep occurrence Overdue and visible |
 | Background-isolate DB access and UI staleness | Wrong or stale lists | `shareAcrossIsolates`, re-query on resume, integration test |
 | Natural-language parsing edge cases | Wrong time saved silently | Always show the editable preview; test table; never auto-save without the preview |
+| `sqlite3` build step downloads a prebuilt SQLite from GitHub; fails behind SSL-inspecting proxies (`CERTIFICATE_VERIFY_FAILED`) and for ABIs not yet cached (e.g. 32-bit arm) | `flutter build` fails | Build `--target-platform android-arm64` (cached), trust the proxy CA via `SSL_CERT_FILE`, host the files and set the `url_pattern` hook define, or compile from a checked-in `sqlite3.c` (`source: source`); see the package's `doc/hook.md` |
+| Release-only startup failures (R8 and resource shrinking remove things found by reflection or by name) | App dies at launch in release but works in debug | Keep rules in `android/app/proguard-rules.pro` (Room/WorkManager) and `res/raw/keep.xml` (notification icon); **always smoke-test the release APK on a device before shipping** |
 | Local-only data lost on device change | Data loss | P2 JSON export/import; Auto Backup restore + `reconcile()` |
 
 ---

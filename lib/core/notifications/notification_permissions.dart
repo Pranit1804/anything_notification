@@ -1,10 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import '../platform/system_settings.dart';
+
 class PermissionSnapshot extends Equatable {
   const PermissionSnapshot({
     required this.notificationsEnabled,
     required this.exactAlarmsAllowed,
+    this.fullScreenIntentAllowed = true,
   });
 
   /// Android 13+ asks at runtime; the user can also switch them off in
@@ -14,8 +17,16 @@ class PermissionSnapshot extends Equatable {
   /// Without this, reminders are still delivered but may be a few minutes late.
   final bool exactAlarmsAllowed;
 
+  /// Without this, alarm-style reminders still ring but show as an ordinary
+  /// heads-up instead of taking over the screen.
+  final bool fullScreenIntentAllowed;
+
   @override
-  List<Object> get props => [notificationsEnabled, exactAlarmsAllowed];
+  List<Object> get props => [
+    notificationsEnabled,
+    exactAlarmsAllowed,
+    fullScreenIntentAllowed,
+  ];
 }
 
 abstract interface class NotificationPermissions {
@@ -31,12 +42,16 @@ abstract interface class NotificationPermissions {
   /// Opens the app's notification settings (for when the dialog can no longer
   /// be shown).
   Future<void> openNotificationSettings();
+
+  /// Opens the system screen where full-screen alerts can be allowed.
+  Future<void> requestFullScreenIntent();
 }
 
 class PluginNotificationPermissions implements NotificationPermissions {
-  PluginNotificationPermissions(this._plugin);
+  PluginNotificationPermissions(this._plugin, this._system);
 
   final FlutterLocalNotificationsPlugin _plugin;
+  final SystemSettings _system;
 
   AndroidFlutterLocalNotificationsPlugin? get _android => _plugin
       .resolvePlatformSpecificImplementation<
@@ -48,6 +63,7 @@ class PluginNotificationPermissions implements NotificationPermissions {
     notificationsEnabled: await _android?.areNotificationsEnabled() ?? false,
     exactAlarmsAllowed:
         await _android?.canScheduleExactNotifications() ?? false,
+    fullScreenIntentAllowed: await _system.canUseFullScreenIntent(),
   );
 
   @override
@@ -64,5 +80,10 @@ class PluginNotificationPermissions implements NotificationPermissions {
   @override
   Future<void> openNotificationSettings() async {
     await _android?.openAppNotificationSettings();
+  }
+
+  @override
+  Future<void> requestFullScreenIntent() async {
+    await _android?.requestFullScreenIntentPermission();
   }
 }

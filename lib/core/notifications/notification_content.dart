@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -22,29 +23,62 @@ abstract final class NotificationChannels {
     description: 'Notifications for your reminders',
     importance: Importance.high,
   );
+
+  /// Alarm-style reminders: loud, on the alarm volume, ringing until the user
+  /// responds. A channel's sound and importance cannot change once created,
+  /// hence a channel of its own.
+  static const alarms = AndroidNotificationChannel(
+    'alarms',
+    'Alarms',
+    description: 'Reminders that ring until you respond',
+    importance: Importance.max,
+    audioAttributesUsage: AudioAttributesUsage.alarm,
+    sound: UriAndroidNotificationSound('content://settings/system/alarm_alert'),
+    enableVibration: true,
+  );
+
+  static const all = [reminders, alarms];
 }
+
+/// Android's FLAG_INSISTENT: repeat the sound until the notification is
+/// dismissed or acted on.
+const _flagInsistent = 4;
 
 /// How a planned alarm is shown.
 NotificationDetails notificationDetailsFor(
   PlannedAlarm alarm, {
   required int snoozeMinutes,
 }) {
-  final sticky = alarm.delivery == DeliveryMode.sticky;
   final categoryColor = alarm.categoryColor;
+  final isAlarm = alarm.delivery == DeliveryMode.alarm;
+  // Sticky and alarm notifications stay until the user responds.
+  final stays = alarm.delivery != DeliveryMode.standard;
+  final channel = isAlarm
+      ? NotificationChannels.alarms
+      : NotificationChannels.reminders;
 
   return NotificationDetails(
     android: AndroidNotificationDetails(
-      NotificationChannels.reminders.id,
-      NotificationChannels.reminders.name,
-      channelDescription: NotificationChannels.reminders.description,
-      importance: Importance.high,
-      priority: Priority.high,
+      channel.id,
+      channel.name,
+      channelDescription: channel.description,
+      importance: isAlarm ? Importance.max : Importance.high,
+      priority: isAlarm ? Priority.max : Priority.high,
       icon: notificationSmallIcon,
-      category: AndroidNotificationCategory.reminder,
+      category: isAlarm
+          ? AndroidNotificationCategory.alarm
+          : AndroidNotificationCategory.reminder,
       subText: alarm.categoryName,
       color: categoryColor == null ? null : Color(categoryColor),
-      ongoing: sticky,
-      autoCancel: !sticky,
+      ongoing: stays,
+      autoCancel: !stays,
+      // Alarm-style: wake the screen over the lock screen and keep ringing.
+      // Without the full-screen permission Android shows it as a heads-up.
+      fullScreenIntent: isAlarm,
+      audioAttributesUsage: isAlarm
+          ? AudioAttributesUsage.alarm
+          : AudioAttributesUsage.notification,
+      additionalFlags: isAlarm ? Int32List.fromList([_flagInsistent]) : null,
       actions: [
         const AndroidNotificationAction(actionDone, 'Done'),
         AndroidNotificationAction(actionSnooze, 'Snooze ${snoozeMinutes}m'),

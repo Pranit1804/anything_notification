@@ -68,11 +68,13 @@ class AppContainer {
       onDidReceiveNotificationResponse: onNotificationResponse,
       onDidReceiveBackgroundNotificationResponse: notificationBackgroundHandler,
     );
-    await plugin
+    final android = plugin
         .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin
-        >()
-        ?.createNotificationChannel(NotificationChannels.reminders);
+        >();
+    for (final channel in NotificationChannels.all) {
+      await android?.createNotificationChannel(channel);
+    }
 
     final scheduler = NotificationAlarmScheduler(
       plugin: plugin,
@@ -105,13 +107,13 @@ class AppContainer {
 
   /// Wires up the UI-facing dependencies, including notification taps.
   static Future<AppDependencies> createForUi() async {
-    final taps = StreamController<int>.broadcast();
+    final taps = StreamController<AlarmPayload>.broadcast();
     final container = await create(
       onNotificationResponse: (response) {
         // Buttons are handled in the background; only plain taps open the app.
         if (response.actionId != null && response.actionId!.isNotEmpty) return;
         final payload = AlarmPayload.tryParse(response.payload);
-        if (payload != null) taps.add(payload.reminderId);
+        if (payload != null) taps.add(payload);
       },
     );
 
@@ -128,7 +130,10 @@ class AppContainer {
       historyRepository: container.history,
       reminderService: container.service,
       scheduler: container.scheduler,
-      permissions: PluginNotificationPermissions(container.plugin),
+      permissions: PluginNotificationPermissions(
+        container.plugin,
+        const MethodChannelSystemSettings(),
+      ),
       testNotifications: PluginTestNotificationSender(
         container.plugin,
         container.clock,
@@ -136,7 +141,7 @@ class AppContainer {
       systemSettings: const MethodChannelSystemSettings(),
       clock: container.clock,
       openReminderRequests: taps.stream,
-      initialReminderId: launchedBy?.reminderId,
+      initialOpen: launchedBy,
     );
   }
 

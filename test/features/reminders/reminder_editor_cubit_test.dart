@@ -269,4 +269,56 @@ void main() {
       expect((await env.repository.getById(created.id))!.categoryId, isNull);
     });
   });
+
+  group('delivery', () {
+    test('starts standard and is saved with the reminder', () async {
+      final c = cubit()..titleChanged('Take pills');
+      expect(c.state.delivery, DeliveryMode.standard);
+
+      c.deliveryChanged(DeliveryMode.alarm);
+      await c.save();
+
+      expect(
+        (await env.repository.getAll()).single.delivery,
+        DeliveryMode.alarm,
+      );
+    });
+
+    test('is prefilled when editing and can be changed', () async {
+      final created = await env.service.create(
+        ReminderDraft(
+          title: 'Original',
+          start: naive(2026, 10, 24, 9),
+          delivery: DeliveryMode.sticky,
+        ),
+      );
+      final c = cubit(existing: created);
+      expect(c.state.delivery, DeliveryMode.sticky);
+
+      c.deliveryChanged(DeliveryMode.standard);
+      await c.save();
+
+      expect(
+        (await env.repository.getById(created.id))!.delivery,
+        DeliveryMode.standard,
+      );
+    });
+
+    test(
+      'changing it bumps the revision so armed notifications are rebuilt',
+      () async {
+        final created = await env.service.create(
+          ReminderDraft(title: 'Pills', start: naive(2026, 10, 24, 9)),
+        );
+        final c = cubit(existing: created)..deliveryChanged(DeliveryMode.alarm);
+
+        await c.save();
+
+        expect(
+          (await env.repository.getById(created.id))!.revision,
+          greaterThan(created.revision),
+        );
+      },
+    );
+  });
 }

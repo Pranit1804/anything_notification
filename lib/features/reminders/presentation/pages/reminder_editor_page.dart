@@ -9,6 +9,8 @@ import '../../../../core/time/zoned_clock.dart';
 import '../../../categories/presentation/categories_cubit.dart';
 import '../../../categories/presentation/category_editor_sheet.dart';
 import '../../../categories/presentation/category_visuals.dart';
+import '../../../../core/notifications/notification_permissions.dart';
+import '../../../permissions/presentation/permissions_cubit.dart';
 import '../../../permissions/presentation/post_save_prompts.dart';
 import '../../application/reminder_service.dart';
 import '../../data/reminder_repository.dart';
@@ -296,6 +298,11 @@ class _EditorViewState extends State<_EditorView> {
                 selectedId: state.categoryId,
                 onSelected: cubit.categoryChanged,
               ),
+              _SectionLabel(l10n.editorDelivery),
+              _DeliveryPicker(
+                selected: state.delivery,
+                onSelected: cubit.deliveryChanged,
+              ),
               const SizedBox(height: 16),
               _NextPreview(state: state),
               if (state.existing != null) ...[
@@ -516,6 +523,114 @@ class _CategoryPicker extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+}
+
+/// Standard, sticky or alarm-style, with a line saying what the choice does.
+/// Alarm-style warns when the phone will not let it take over the screen.
+class _DeliveryPicker extends StatelessWidget {
+  const _DeliveryPicker({required this.selected, required this.onSelected});
+
+  final DeliveryMode selected;
+  final ValueChanged<DeliveryMode> onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+
+    final hint = switch (selected) {
+      DeliveryMode.standard => l10n.deliveryStandardHint,
+      DeliveryMode.sticky => l10n.deliveryStickyHint,
+      DeliveryMode.alarm => l10n.deliveryAlarmHint,
+    };
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: double.infinity,
+          child: SegmentedButton<DeliveryMode>(
+            showSelectedIcon: false,
+            segments: [
+              ButtonSegment(
+                value: DeliveryMode.standard,
+                icon: const Icon(Icons.notifications_none_rounded),
+                label: Text(l10n.deliveryStandard),
+              ),
+              ButtonSegment(
+                value: DeliveryMode.sticky,
+                icon: const Icon(Icons.push_pin_outlined),
+                label: Text(l10n.deliverySticky),
+              ),
+              ButtonSegment(
+                value: DeliveryMode.alarm,
+                icon: const Icon(Icons.alarm_rounded),
+                label: Text(l10n.deliveryAlarm),
+              ),
+            ],
+            selected: {selected},
+            onSelectionChanged: (s) => onSelected(s.first),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+          child: Text(
+            hint,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: scheme.onSurfaceVariant,
+            ),
+          ),
+        ),
+        if (selected == DeliveryMode.alarm)
+          BlocBuilder<PermissionsCubit, PermissionSnapshot?>(
+            builder: (context, snapshot) {
+              if (snapshot == null || snapshot.fullScreenIntentAllowed) {
+                return const SizedBox.shrink();
+              }
+              return Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: scheme.tertiaryContainer,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.deliveryAlarmWarningTitle,
+                          style: theme.textTheme.titleSmall?.copyWith(
+                            color: scheme.onTertiaryContainer,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          l10n.deliveryAlarmWarningBody,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: scheme.onTertiaryContainer,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        FilledButton.tonal(
+                          onPressed: context
+                              .read<PermissionsCubit>()
+                              .requestFullScreenIntent,
+                          child: Text(l10n.permAllow),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+      ],
     );
   }
 }

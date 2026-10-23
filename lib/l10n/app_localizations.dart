@@ -1089,6 +1089,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Call mom tomorrow at 6pm'**
   String get quickAddExample3;
+
+  /// No description provided for @editorDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'How it notifies you'**
+  String get editorDelivery;
+
+  /// No description provided for @deliveryStandard.
+  ///
+  /// In en, this message translates to:
+  /// **'Standard'**
+  String get deliveryStandard;
+
+  /// No description provided for @deliverySticky.
+  ///
+  /// In en, this message translates to:
+  /// **'Sticky'**
+  String get deliverySticky;
+
+  /// No description provided for @deliveryAlarm.
+  ///
+  /// In en, this message translates to:
+  /// **'Alarm'**
+  String get deliveryAlarm;
+
+  /// No description provided for @deliveryStandardHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A normal notification you can swipe away.'**
+  String get deliveryStandardHint;
+
+  /// No description provided for @deliveryStickyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Stays in your notifications until you mark it done or snooze it.'**
+  String get deliveryStickyHint;
+
+  /// No description provided for @deliveryAlarmHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Wakes the screen and rings until you respond.'**
+  String get deliveryAlarmHint;
+
+  /// No description provided for @deliveryAlarmWarningTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Full-screen alarms need permission'**
+  String get deliveryAlarmWarningTitle;
+
+  /// No description provided for @deliveryAlarmWarningBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Without it the alarm still rings, but shows as a normal notification instead of taking over the screen.'**
+  String get deliveryAlarmWarningBody;
+
+  /// No description provided for @reliabilityFullScreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Full-screen alerts'**
+  String get reliabilityFullScreen;
+
+  /// No description provided for @reliabilityGuideSticky.
+  ///
+  /// In en, this message translates to:
+  /// **'On Android 14 and newer you can still swipe a sticky notification away. It then stays in Overdue until you handle it.'**
+  String get reliabilityGuideSticky;
+
+  /// No description provided for @alarmDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get alarmDone;
+
+  /// No description provided for @alarmSnooze.
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze {minutes} min'**
+  String alarmSnooze(int minutes);
+
+  /// No description provided for @alarmDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Due {time}'**
+  String alarmDue(String time);
 }
 
 class _AppLocalizationsDelegate

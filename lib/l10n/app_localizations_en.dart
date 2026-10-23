@@ -682,4 +682,55 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quickAddExample3 => 'Call mom tomorrow at 6pm';
+
+  @override
+  String get editorDelivery => 'How it notifies you';
+
+  @override
+  String get deliveryStandard => 'Standard';
+
+  @override
+  String get deliverySticky => 'Sticky';
+
+  @override
+  String get deliveryAlarm => 'Alarm';
+
+  @override
+  String get deliveryStandardHint =>
+      'A normal notification you can swipe away.';
+
+  @override
+  String get deliveryStickyHint =>
+      'Stays in your notifications until you mark it done or snooze it.';
+
+  @override
+  String get deliveryAlarmHint =>
+      'Wakes the screen and rings until you respond.';
+
+  @override
+  String get deliveryAlarmWarningTitle => 'Full-screen alarms need permission';
+
+  @override
+  String get deliveryAlarmWarningBody =>
+      'Without it the alarm still rings, but shows as a normal notification instead of taking over the screen.';
+
+  @override
+  String get reliabilityFullScreen => 'Full-screen alerts';
+
+  @override
+  String get reliabilityGuideSticky =>
+      'On Android 14 and newer you can still swipe a sticky notification away. It then stays in Overdue until you handle it.';
+
+  @override
+  String get alarmDone => 'Done';
+
+  @override
+  String alarmSnooze(int minutes) {
+    return 'Snooze $minutes min';
+  }
+
+  @override
+  String alarmDue(String time) {
+    return 'Due $time';
+  }
 }

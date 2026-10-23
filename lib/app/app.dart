@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/notifications/alarm_payload.dart';
 import '../core/notifications/refresh_port.dart';
 import '../core/time/zoned_clock.dart';
 import '../features/categories/presentation/categories_cubit.dart';
@@ -14,6 +15,7 @@ import '../features/history/presentation/history_cubit.dart';
 import '../features/permissions/presentation/permissions_cubit.dart';
 import '../features/reminders/application/reminder_service.dart';
 import '../features/reminders/data/reminder_repository.dart';
+import '../features/reminders/domain/reminder.dart';
 import '../features/reminders/presentation/cubit/reminder_list_cubit.dart';
 import '../features/settings/data/settings_repository.dart';
 import '../features/settings/domain/app_settings.dart';
@@ -41,7 +43,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   late final CategoriesCubit _categories;
   late final HistoryCubit _history;
   RefreshListener? _refreshListener;
-  StreamSubscription<int>? _notificationTaps;
+  StreamSubscription<AlarmPayload>? _notificationTaps;
 
   AppDependencies get _deps => widget.dependencies;
 
@@ -76,7 +78,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     }
 
     _notificationTaps = _deps.openReminderRequests.listen(_openReminder);
-    final initial = _deps.initialReminderId;
+    final initial = _deps.initialOpen;
     if (initial != null) {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) => _openReminder(initial),
@@ -84,8 +86,28 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     }
   }
 
-  void _openReminder(int id) =>
-      unawaited(_router.push(AppRoutes.editReminder(id)));
+  /// An alarm-style reminder opens the full-screen alarm; anything else opens
+  /// the reminder to edit.
+  Future<void> _openReminder(AlarmPayload payload) async {
+    final reminder = await _deps.reminderRepository.getById(payload.reminderId);
+    // A tap on a notification for something already finished does nothing.
+    if (reminder == null ||
+        reminder.status == ReminderStatus.completed ||
+        !mounted) {
+      return;
+    }
+
+    final ringing =
+        reminder.delivery == DeliveryMode.alarm &&
+        reminder.status == ReminderStatus.active;
+    unawaited(
+      _router.push(
+        ringing
+            ? AppRoutes.alarm(reminder.id, payload.occurrence)
+            : AppRoutes.editReminder(reminder.id),
+      ),
+    );
+  }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {

@@ -50,6 +50,9 @@ class PermissionsCubit extends Cubit<PermissionSnapshot?> {
 
   Future<void> requestExactAlarms() => _permissions.requestExactAlarms();
 
+  Future<void> requestFullScreenIntent() =>
+      _permissions.requestFullScreenIntent();
+
   Future<void> openNotificationSettings() =>
       _permissions.openNotificationSettings();
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The notification icon is looked up by name at runtime, so the release
+     build's resource shrinker cannot see it is used and would remove it. That
+     makes notification setup fail at startup ("invalid_icon"). -->
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@drawable/ic_stat_reminder" />

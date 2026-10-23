@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 
+import '../features/alarm/presentation/alarm_page.dart';
 import '../features/categories/presentation/categories_page.dart';
 import '../features/history/presentation/history_page.dart';
 import '../features/reminders/presentation/cubit/reminder_editor_cubit.dart';
@@ -16,6 +17,10 @@ abstract final class AppRoutes {
   static const newReminder = '/reminder/new';
 
   static String editReminder(int id) => '/reminder/$id';
+
+  /// [occurrence] is the naive wall-clock time that is ringing.
+  static String alarm(int id, DateTime occurrence) =>
+      '/alarm/$id?o=${occurrence.millisecondsSinceEpoch}';
 }
 
 GoRouter createRouter() {
@@ -63,6 +68,16 @@ GoRouter createRouter() {
         path: AppRoutes.newReminder,
         builder: (context, state) =>
             ReminderEditorPage(prefill: state.extra as ReminderPrefill?),
+      ),
+      GoRoute(
+        path: '/alarm/:id',
+        builder: (context, state) => AlarmPage(
+          reminderId: int.tryParse(state.pathParameters['id'] ?? '') ?? 0,
+          occurrence: DateTime.fromMillisecondsSinceEpoch(
+            int.tryParse(state.uri.queryParameters['o'] ?? '') ?? 0,
+            isUtc: true,
+          ),
+        ),
       ),
       GoRoute(
         path: '/reminder/:id',

@@ -32,6 +32,7 @@ class ReminderEditorState extends Equatable {
     required this.start,
     required this.recurrence,
     required this.paused,
+    this.delivery = DeliveryMode.standard,
     this.categoryId,
     this.existing,
     this.error,
@@ -46,6 +47,8 @@ class ReminderEditorState extends Equatable {
   final DateTime start;
   final RecurrenceRule? recurrence;
   final bool paused;
+
+  final DeliveryMode delivery;
 
   /// Null for no category.
   final int? categoryId;
@@ -65,6 +68,7 @@ class ReminderEditorState extends Equatable {
     RecurrenceRule? recurrence,
     bool clearRecurrence = false,
     bool? paused,
+    DeliveryMode? delivery,
     int? categoryId,
     bool clearCategory = false,
     EditorError? error,
@@ -77,6 +81,7 @@ class ReminderEditorState extends Equatable {
     start: start ?? this.start,
     recurrence: clearRecurrence ? null : (recurrence ?? this.recurrence),
     paused: paused ?? this.paused,
+    delivery: delivery ?? this.delivery,
     categoryId: clearCategory ? null : (categoryId ?? this.categoryId),
     existing: existing,
     error: clearError ? null : (error ?? this.error),
@@ -91,6 +96,7 @@ class ReminderEditorState extends Equatable {
     start,
     recurrence,
     paused,
+    delivery,
     categoryId,
     existing,
     error,
@@ -126,6 +132,7 @@ class ReminderEditorCubit extends Cubit<ReminderEditorState> {
                  start: existing.start,
                  recurrence: existing.recurrence,
                  paused: existing.status == ReminderStatus.paused,
+                 delivery: existing.delivery,
                  categoryId: existing.categoryId,
                  existing: existing,
                ),
@@ -180,6 +187,9 @@ class ReminderEditorCubit extends Cubit<ReminderEditorState> {
 
   void pausedChanged(bool value) => emit(state.copyWith(paused: value));
 
+  void deliveryChanged(DeliveryMode value) =>
+      emit(state.copyWith(delivery: value));
+
   /// Picks a category, or none with null.
   void categoryChanged(int? id) =>
       emit(state.copyWith(categoryId: id, clearCategory: id == null));
@@ -224,6 +234,7 @@ class ReminderEditorCubit extends Cubit<ReminderEditorState> {
           start: state.start,
           recurrence: state.recurrence,
           categoryId: state.categoryId,
+          delivery: state.delivery,
           status: status,
         ),
       );
@@ -243,6 +254,7 @@ class ReminderEditorCubit extends Cubit<ReminderEditorState> {
           clearRecurrence: state.recurrence == null,
           categoryId: state.categoryId,
           clearCategory: state.categoryId == null,
+          delivery: state.delivery,
           status: status,
           clearResolvedThrough: rescheduled,
           clearSnoozedUntil: rescheduled,

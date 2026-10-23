@@ -71,8 +71,16 @@ class AppDatabase extends _$AppDatabase {
           name: 'anything_notification',
           native: DriftNativeOptions(
             setup: (db) {
-              db.execute('PRAGMA journal_mode = WAL;');
+              // The timeout must come first: the app and the background worker
+              // open the database together at startup, and the next pragma can
+              // meet the other connection.
               db.execute('PRAGMA busy_timeout = 5000;');
+              try {
+                db.execute('PRAGMA journal_mode = WAL;');
+              } on Object {
+                // WAL is remembered by the database file, so another connection
+                // having it locked right now just means it is (or will be) set.
+              }
             },
           ),
         ),

@@ -1,3 +1,4 @@
+import '../core/notifications/alarm_payload.dart';
 import '../core/notifications/alarm_scheduler.dart';
 import '../core/notifications/notification_permissions.dart';
 import '../core/notifications/test_notification.dart';
@@ -24,7 +25,7 @@ class AppDependencies {
     required this.systemSettings,
     required this.clock,
     this.openReminderRequests = const Stream.empty(),
-    this.initialReminderId,
+    this.initialOpen,
   });
 
   final SettingsRepository settingsRepository;
@@ -38,9 +39,10 @@ class AppDependencies {
   final SystemSettings systemSettings;
   final ZonedClock clock;
 
-  /// Ids of reminders whose notification was tapped while the app was running.
-  final Stream<int> openReminderRequests;
+  /// Notifications tapped while the app was running (or that took over the
+  /// screen, for alarm-style reminders).
+  final Stream<AlarmPayload> openReminderRequests;
 
   /// Set when the app was launched by tapping a reminder's notification.
-  final int? initialReminderId;
+  final AlarmPayload? initialOpen;
 }

@@ -6,6 +6,10 @@
     <!-- Deliver reminders on the minute. User-grantable on Android 13+; the app
          falls back to inexact alarms without it. -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <!-- Alarm-style reminders take over the screen. Only those; users can turn
+         this off per app on Android 14+, and the app then falls back to a
+         heads-up notification. -->
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"/>
 
     <application
         android:label="Anything Notification"
